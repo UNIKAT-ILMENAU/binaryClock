@@ -11,6 +11,21 @@
 - https://forum.arduino.cc/t/time-libary-sommerzeit-winterzeit/221884
 
 
+### Modi
+Button 1: Select
+Button 2: Plus
+Button 3: Minus
+
+Select rotiert durch die Zustände, Plus und Minus verändern den Wert
+
+- TimeRunning, Zeit wird angezeigt und zählt          
+- MenuYear, Jahr setzen
+- MenuMonth, Monat setzen
+- MenuDay, Tag setzen
+- MenuHour, Stunden setzen
+- MenuMinute, Minuten setzen
+- MenuSecond, Sekunden setzen 
+
 ## ADC Calculation
 | No. Switches    |           3 |        | Button No. | Req'd ADC | Req'd V (R1) | Req'd V (R2+) | Req'd R | Closest R | Actual V (R1) | Actual V (R2+) | Actual ADC | Diff from prev. | In Tolerance | Current (mA) |
 |-----------------|------------:|--------|-----------:|----------:|-------------:|--------------:|--------:|----------:|--------------:|---------------:|-----------:|----------------:|-------------:|-------------:|
