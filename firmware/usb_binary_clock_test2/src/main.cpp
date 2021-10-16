@@ -23,7 +23,9 @@ timer interrupt generator: https://www.arduinoslovakia.eu/application/timer-calc
 #define BUTTON_2_THRESHOLD 512 // 346
 #define BUTTON_3_THRESHOLD 851 // 678
 
-#define MCP_TIMER_INTERVAL_MS 1000
+#define LEDS_UPDATE_INTERVAL_MS 100
+#define BUTTON_DEBOUNCE_MS 50
+#define BUTTON_HOLD_MS 500
 
 enum ClockStates
 {
@@ -54,8 +56,9 @@ uint8_t columnValues[4] = {0};
 
 enum ClockStates clockState = TimeRunning;
 
-enum Buttons buttons = ButtonNone;
-
+Buttons lastButton = ButtonNone;
+unsigned long tLastUpdateTimer = 0;
+unsigned long tLastButtonTimer = 0;
 tm theTimeWeWantToSet;
 
 // MCP7940 object
@@ -346,15 +349,20 @@ Buttons getButtons()
 
 void loop()
 {
-  unsigned long static tLastUpdateTimer = 0;
   unsigned long tCurrentTime = millis();
 
-  Buttons readButtons = getButtons();
-  // columnValues[0] = readButtons;
-
-  if (tCurrentTime - tLastUpdateTimer > MCP_TIMER_INTERVAL_MS)
+  Buttons readButton = getButtons();
+  if ((readButton != lastButton && tCurrentTime - tLastButtonTimer > BUTTON_DEBOUNCE_MS) ||
+      tCurrentTime - tLastButtonTimer > BUTTON_HOLD_MS)
   {
-    stateFunction(readButtons);
+    stateFunction(readButton);
+    lastButton = readButton;
+    tLastButtonTimer = tCurrentTime;
+  }
+  // columnValues[0] = readButton;
+
+  if (tCurrentTime - tLastUpdateTimer > LEDS_UPDATE_INTERVAL_MS)
+  {
     setColumValues();
     // getTimeAndWriteToLeds();
     tLastUpdateTimer = tCurrentTime;
