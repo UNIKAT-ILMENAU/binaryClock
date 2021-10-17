@@ -321,10 +321,10 @@ void setCol(uint8_t col, uint8_t columnValue)
   digitalWrite(COL2, HIGH);
   digitalWrite(COL3, HIGH);
 
-  digitalWrite(ROW0, columnValue & 0b0001);
-  digitalWrite(ROW1, columnValue & 0b0010);
-  digitalWrite(ROW2, columnValue & 0b0100);
-  digitalWrite(ROW3, columnValue & 0b1000);
+  digitalWrite(ROW3, columnValue & 0b0001);
+  digitalWrite(ROW2, columnValue & 0b0010);
+  digitalWrite(ROW1, columnValue & 0b0100);
+  digitalWrite(ROW0, columnValue & 0b1000);
 
   digitalWrite(COL[col], LOW);
 }
