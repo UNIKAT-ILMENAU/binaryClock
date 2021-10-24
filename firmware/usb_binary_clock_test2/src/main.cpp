@@ -316,17 +316,47 @@ void setColumValues()
 // set column col according to binary patter columnValue
 void setCol(uint8_t col, uint8_t columnValue)
 {
-  digitalWrite(COL0, HIGH);
-  digitalWrite(COL1, HIGH);
-  digitalWrite(COL2, HIGH);
-  digitalWrite(COL3, HIGH);
+  // set columns to floating
+  pinMode(COL0, INPUT);
+  pinMode(COL1, INPUT);
 
-  digitalWrite(ROW3, columnValue & 0b0001);
-  digitalWrite(ROW2, columnValue & 0b0010);
-  digitalWrite(ROW1, columnValue & 0b0100);
-  digitalWrite(ROW0, columnValue & 0b1000);
+  if (col % 2 == 0)
+  {
+    digitalWrite(ROW3, columnValue & 0b0001);
+    digitalWrite(ROW2, columnValue & 0b0010);
+    digitalWrite(ROW1, columnValue & 0b0100);
+    digitalWrite(ROW0, columnValue & 0b1000);
+  }
+  else
+  {
+    digitalWrite(ROW3, !(columnValue & 0b0001));
+    digitalWrite(ROW2, !(columnValue & 0b0010));
+    digitalWrite(ROW1, !(columnValue & 0b0100));
+    digitalWrite(ROW0, !(columnValue & 0b1000));
+  }
 
-  digitalWrite(COL[col], LOW);
+  // digitalWrite(COL[col], LOW);
+
+  if (col == 0)
+  {
+    pinMode(COL0, OUTPUT);
+    digitalWrite(COL0, LOW);
+  }
+  if (col == 1)
+  {
+    pinMode(COL0, OUTPUT);
+    digitalWrite(COL0, HIGH);
+  }
+  if (col == 2)
+  {
+    pinMode(COL1, OUTPUT);
+    digitalWrite(COL1, LOW);
+  }
+  if (col == 3)
+  {
+    pinMode(COL1, OUTPUT);
+    digitalWrite(COL1, HIGH);
+  }
 }
 
 Buttons getButtons()
@@ -349,6 +379,12 @@ Buttons getButtons()
 
 void loop()
 {
+  // setCol(0, 0b1111);
+  // setCol(1, 0b1001);
+  // setCol(2, 0b1001);
+  // setCol(3, 0b1111);
+  // return;
+
   unsigned long tCurrentTime = millis();
 
   Buttons readButton = getButtons();
