@@ -319,23 +319,23 @@ void setCol(uint8_t col, uint8_t columnValue)
   // set columns to floating
   pinMode(COL0, INPUT);
   pinMode(COL1, INPUT);
-
+  
   if (col % 2 == 0)
   {
-    digitalWrite(ROW3, columnValue & 0b0001);
-    digitalWrite(ROW2, columnValue & 0b0010);
-    digitalWrite(ROW1, columnValue & 0b0100);
-    digitalWrite(ROW0, columnValue & 0b1000);
+    PORTA &= 0b11110000; // turn off pin0-3
+    PORTA |= columnValue&0b00001111;  // turn on pin0-3 where columnValue is 1
   }
   else
   {
-    digitalWrite(ROW3, !(columnValue & 0b0001));
-    digitalWrite(ROW2, !(columnValue & 0b0010));
-    digitalWrite(ROW1, !(columnValue & 0b0100));
-    digitalWrite(ROW0, !(columnValue & 0b1000));
-  }
+    PORTA |= 0b00001111; // turn on pin0-3
+    PORTA &= ~(columnValue&0b00001111); // turn off pin0-3 where columeValue is 1
+    
+    // Beispielrechnung
+    // dddd 1010 & 0000 1111 = 0000 1010
+    //           ~ 0000 1010 = 1111 0101
+    // dddd 1111 & 1111 0101 = dddd 0101
 
-  // digitalWrite(COL[col], LOW);
+  }
 
   if (col == 0)
   {
@@ -344,8 +344,8 @@ void setCol(uint8_t col, uint8_t columnValue)
   }
   if (col == 1)
   {
-    pinMode(COL0, OUTPUT);
     digitalWrite(COL0, HIGH);
+    pinMode(COL0, OUTPUT);
   }
   if (col == 2)
   {
@@ -354,8 +354,8 @@ void setCol(uint8_t col, uint8_t columnValue)
   }
   if (col == 3)
   {
-    pinMode(COL1, OUTPUT);
     digitalWrite(COL1, HIGH);
+    pinMode(COL1, OUTPUT);
   }
 }
 
@@ -379,12 +379,6 @@ Buttons getButtons()
 
 void loop()
 {
-  // setCol(0, 0b1111);
-  // setCol(1, 0b1001);
-  // setCol(2, 0b1001);
-  // setCol(3, 0b1111);
-  // return;
-
   unsigned long tCurrentTime = millis();
 
   Buttons readButton = getButtons();
