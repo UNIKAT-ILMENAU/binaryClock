@@ -73,34 +73,15 @@ void setupTimer1()
   TCCR1B = 0;
   TCNT1 = 0;
 
-  // 10000 Hz (16000000/((24+1)*64))
+  // 40000 Hz (8000000/((24+1)*8))
   OCR1A = 24;
   // CTC
   TCCR1B |= (1 << WGM12);
-  // Prescaler 64
-  TCCR1B |= (1 << CS11) | (1 << CS10);
+  // Prescaler 8
+  TCCR1B |= (1 << CS11);
   // Output Compare Match A Interrupt Enable
   TIMSK1 |= (1 << OCIE1A);
   interrupts();
-}
-
-void setup()
-{
-  pinMode(ROW0, OUTPUT);
-  pinMode(ROW1, OUTPUT);
-  pinMode(ROW2, OUTPUT);
-  pinMode(ROW3, OUTPUT);
-  pinMode(COL0, OUTPUT);
-  pinMode(COL1, OUTPUT);
-  pinMode(BUTTON_PIN, INPUT);
-  pinMode(PHOTOTRANSISTOR, INPUT);
-  setupTimer1();
-
-  while (!MCP7940.begin())
-  {
-    delay(1);
-  }
-  MCP7940.deviceStart();
 }
 
 tm dateTimeToTm(DateTime dateTime)
@@ -326,10 +307,15 @@ void setColumValues()
 // set column col according to binary patter columnValue
 void setCol(uint8_t col, uint8_t columnValue)
 {
+  // set rows to floating
+  DDRA &= 0b11110000;
+
   // set columns to floating
-  pinMode(COL0, INPUT);
-  pinMode(COL1, INPUT);
-  //DDRB &= 0b11111100;
+  // pinMode(COL0, INPUT);
+  // pinMode(COL1, INPUT);
+  // in fast:
+  DDRB &= 0b11111100;
+  PORTB &= 0b11111100; // Remove pullups
 
   if (col % 2 == 0)
   {
@@ -349,31 +335,55 @@ void setCol(uint8_t col, uint8_t columnValue)
 
   if (col == 0)
   {
-    pinMode(COL0, OUTPUT);
-    digitalWrite(COL0, LOW);
+    // pinMode(COL0, OUTPUT);
+    // digitalWrite(COL0, LOW);
+    // in fast:
+    PORTB &= 0b11111110;
+    DDRB |= 0b00000001;
   }
   else if (col == 1)
   {
-    digitalWrite(COL0, HIGH);
-    pinMode(COL0, OUTPUT);
+    // digitalWrite(COL0, HIGH);
+    // pinMode(COL0, OUTPUT);
+    // in fast:
+    PORTB |= 0b00000001;
+    DDRB |= 0b00000001;
   }
   else if (col == 2)
   {
-    pinMode(COL1, OUTPUT);
-    digitalWrite(COL1, LOW);
+    // pinMode(COL1, OUTPUT);
+    // digitalWrite(COL1, LOW);
+    // in fast:
+    PORTB &= 0b11111101;
+    DDRB |= 0b00000010;
   }
   else if (col == 3)
   {
-    digitalWrite(COL1, HIGH);
-    pinMode(COL1, OUTPUT);
+    // digitalWrite(COL1, HIGH);
+    // pinMode(COL1, OUTPUT);
+    // in fast:
+    PORTB |= 0b00000010;
+    DDRB |= 0b00000010;
   }
+  // set rows to output
+  DDRA |= 0b00001111;
 }
 
 void turnOffLeds()
 {
-  pinMode(COL0, INPUT);
-  pinMode(COL1, INPUT);
+  // set rows to floating
+  DDRA &= 0b11110000;
+
+  // set columns to floating
+  // pinMode(COL0, INPUT);
+  // pinMode(COL1, INPUT);
+  // in fast:
+  DDRB &= 0b11111100;
+  PORTB &= 0b11111100; // Remove pullups
+  // turn off pin0-3
   PORTA &= 0b11110000;
+  // set rows to output
+  DDRA |= 0b00001111;
 }
 
 Buttons getButtons()
@@ -394,8 +404,30 @@ Buttons getButtons()
   return ButtonNone; // Kein Button gedrückt
 }
 
+void setup()
+{
+  pinMode(ROW0, OUTPUT);
+  pinMode(ROW1, OUTPUT);
+  pinMode(ROW2, OUTPUT);
+  pinMode(ROW3, OUTPUT);
+  pinMode(COL0, OUTPUT);
+  pinMode(COL1, OUTPUT);
+  pinMode(BUTTON_PIN, INPUT);
+  pinMode(PHOTOTRANSISTOR, INPUT);
+  setupTimer1();
+
+  while (!MCP7940.begin())
+  {
+    delay(1);
+  }
+  MCP7940.deviceStart();
+
+  //columnValues[0] = 4;
+}
+
 void loop()
 {
+  // return;
   unsigned long tCurrentTime = millis();
 
   Buttons readButton = getButtons();
@@ -418,7 +450,7 @@ void loop()
 
 ISR(TIMER1_COMPA_vect)
 {
-  if (pwmCounter == 0 && displayBrightness!=0)
+  if (pwmCounter == 0 && displayBrightness != 0)
   {
     setCol(columnCounter, columnValues[columnCounter]);
     ++columnCounter;
@@ -434,7 +466,7 @@ ISR(TIMER1_COMPA_vect)
 
   ++pwmCounter;
 
-  if (pwmCounter >= 10)
+  if (pwmCounter >= 100)
   {
     pwmCounter = 0;
   }
