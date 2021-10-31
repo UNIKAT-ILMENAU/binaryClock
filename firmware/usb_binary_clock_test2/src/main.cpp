@@ -14,10 +14,9 @@ timer interrupt generator: https://www.arduinoslovakia.eu/application/timer-calc
 #define ROW1 9
 #define ROW2 8
 #define ROW3 7
-#define COL0 3
-#define COL1 0
-#define COL2 1
-#define COL3 2
+#define COL0 0
+#define COL1 1
+#define PHOTOTRANSISTOR A7
 #define BUTTON_PIN A5
 #define BUTTON_1_THRESHOLD 173 // 0
 #define BUTTON_2_THRESHOLD 512 // 346
@@ -47,10 +46,12 @@ enum Buttons
   ButtonMinus
 };
 
-int const COL[] = {COL0, COL1, COL2, COL3};
+int const COL[] = {COL0, COL1};
 int const ROW[] = {ROW0, ROW1, ROW2, ROW3};
 
 uint8_t columnCounter = 0;
+uint8_t pwmCounter = 0;
+uint8_t displayBrightness = 1;
 
 uint8_t columnValues[4] = {0};
 
@@ -72,8 +73,8 @@ void setupTimer1()
   TCCR1B = 0;
   TCNT1 = 0;
 
-  // 1000 Hz (8000000/((124+1)*64))
-  OCR1A = 124;
+  // 10000 Hz (16000000/((24+1)*64))
+  OCR1A = 24;
   // CTC
   TCCR1B |= (1 << WGM12);
   // Prescaler 64
@@ -91,9 +92,8 @@ void setup()
   pinMode(ROW3, OUTPUT);
   pinMode(COL0, OUTPUT);
   pinMode(COL1, OUTPUT);
-  pinMode(COL2, OUTPUT);
-  pinMode(COL3, OUTPUT);
   pinMode(BUTTON_PIN, INPUT);
+  pinMode(PHOTOTRANSISTOR, INPUT);
   setupTimer1();
 
   while (!MCP7940.begin())
@@ -120,7 +120,7 @@ DateTime tmToDateTime(tm time)
   return DateTime(time.tm_year, time.tm_mon, time.tm_mday, time.tm_hour, time.tm_min, time.tm_sec);
 }
 
-ClockStates stateFunction(Buttons buttons)
+ClockStates stateFunction(Buttons buttons) //fix return type
 {
   switch (clockState)
   {
@@ -270,6 +270,16 @@ void setColumValues()
   {
   case TimeRunning:
     getTimeAndWriteToLeds();
+    // uint16_t val = analogRead(PHOTOTRANSISTOR);
+    // uint8_t val1 = val % 10;
+    // uint8_t val10 = (val % 100) / 10;
+    // uint8_t val100 = (val % 1000) / 100;
+    // uint8_t val1000 = val / 1000;
+    // columnValues[0] = val1000;
+    // columnValues[1] = val100;
+    // columnValues[2] = val10;
+    // columnValues[3] = val1;
+
     break;
   case MenuYear:
     columnValues[0] = MenuYear;
@@ -319,22 +329,22 @@ void setCol(uint8_t col, uint8_t columnValue)
   // set columns to floating
   pinMode(COL0, INPUT);
   pinMode(COL1, INPUT);
-  
+  //DDRB &= 0b11111100;
+
   if (col % 2 == 0)
   {
-    PORTA &= 0b11110000; // turn off pin0-3
-    PORTA |= columnValue&0b00001111;  // turn on pin0-3 where columnValue is 1
+    PORTA &= 0b11110000;               // turn off pin0-3
+    PORTA |= columnValue & 0b00001111; // turn on pin0-3 where columnValue is 1
   }
   else
   {
-    PORTA |= 0b00001111; // turn on pin0-3
-    PORTA &= ~(columnValue&0b00001111); // turn off pin0-3 where columeValue is 1
-    
+    PORTA |= 0b00001111;                  // turn on pin0-3
+    PORTA &= ~(columnValue & 0b00001111); // turn off pin0-3 where columeValue is 1
+
     // Beispielrechnung
     // dddd 1010 & 0000 1111 = 0000 1010
     //           ~ 0000 1010 = 1111 0101
     // dddd 1111 & 1111 0101 = dddd 0101
-
   }
 
   if (col == 0)
@@ -342,21 +352,28 @@ void setCol(uint8_t col, uint8_t columnValue)
     pinMode(COL0, OUTPUT);
     digitalWrite(COL0, LOW);
   }
-  if (col == 1)
+  else if (col == 1)
   {
     digitalWrite(COL0, HIGH);
     pinMode(COL0, OUTPUT);
   }
-  if (col == 2)
+  else if (col == 2)
   {
     pinMode(COL1, OUTPUT);
     digitalWrite(COL1, LOW);
   }
-  if (col == 3)
+  else if (col == 3)
   {
     digitalWrite(COL1, HIGH);
     pinMode(COL1, OUTPUT);
   }
+}
+
+void turnOffLeds()
+{
+  pinMode(COL0, INPUT);
+  pinMode(COL1, INPUT);
+  PORTA &= 0b11110000;
 }
 
 Buttons getButtons()
@@ -401,10 +418,24 @@ void loop()
 
 ISR(TIMER1_COMPA_vect)
 {
-  setCol(columnCounter, columnValues[columnCounter]);
-  ++columnCounter;
-  if (columnCounter == 4)
+  if (pwmCounter == 0 && displayBrightness!=0)
   {
-    columnCounter = 0;
+    setCol(columnCounter, columnValues[columnCounter]);
+    ++columnCounter;
+    if (columnCounter == 4)
+    {
+      columnCounter = 0;
+    }
+  }
+  if (pwmCounter == displayBrightness)
+  {
+    turnOffLeds();
+  }
+
+  ++pwmCounter;
+
+  if (pwmCounter >= 10)
+  {
+    pwmCounter = 0;
   }
 }
