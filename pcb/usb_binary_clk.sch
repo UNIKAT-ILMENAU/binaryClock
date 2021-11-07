@@ -71,13 +71,13 @@ F 3 "" H 7650 2450 50  0001 C CNN
 $EndComp
 Wire Wire Line
 	7650 2450 7650 2200
-Text Label 6850 1600 0    50   ~ 0
+Text Label 6850 1700 0    50   ~ 0
 sda
 Wire Wire Line
 	6850 1600 7250 1600
 Wire Wire Line
 	6850 1700 7250 1700
-Text Label 6850 1700 0    50   ~ 0
+Text Label 6850 1600 0    50   ~ 0
 scl
 $Comp
 L Device:Crystal Y1

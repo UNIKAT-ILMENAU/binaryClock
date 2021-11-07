@@ -2,10 +2,18 @@
 
 ## Idee
 
-- QRCode
-- Jumper der zwischen Buttons und Fototransistor wechselt
-    - Fototransistor kann dann genutzt werden, um die Zeit von einer Webseite per Flickercode zu übertragen
-- vllt Transistor woanders dran machen (Matrix oder I2C)
+- QRCode mit Link auf Webseite für Flackercode Config Tool
+- vllt Pads für I2C und ISP rausführen
+- auf PCB, welche LED welcher Modus ist
+- Comic Design? (muss zu Skyline passen)
+
+## Hardware
+- Fotodioden/transistoren
+    - SFH 229 OSO
+    - SFH 203
+    - PT 334-6C EVL
+    - SFH 309-5 OSO
+    - SFH 300-3/4
 
 ## Software
 - https://forum.arduino.cc/t/time-libary-sommerzeit-winterzeit/221884
