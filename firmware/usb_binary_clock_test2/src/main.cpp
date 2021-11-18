@@ -7,6 +7,7 @@ timer interrupt generator: https://www.arduinoslovakia.eu/application/timer-calc
 
 #include <Arduino.h>
 #include <MCP7940.h>
+#include <Tiny4kOLED.h>
 #include <time.h>
 
 // pinout for pio https://raw.githubusercontent.com/SpenceKonde/ATTinyCore/master/avr/extras/Pinout_x4.jpg
@@ -51,7 +52,7 @@ int const ROW[] = {ROW0, ROW1, ROW2, ROW3};
 
 uint8_t columnCounter = 0;
 uint8_t pwmCounter = 0;
-uint8_t displayBrightness = 1;
+uint8_t displayBrightness = 100;
 
 uint8_t columnValues[4] = {0};
 
@@ -64,6 +65,9 @@ tm theTimeWeWantToSet;
 
 // MCP7940 object
 MCP7940_Class MCP7940;
+
+void calculatedFrequency();
+void displayIntAsBCD(uint16_t val);
 
 void setupTimer1()
 {
@@ -250,16 +254,17 @@ void setColumValues()
   switch (clockState)
   {
   case TimeRunning:
-    getTimeAndWriteToLeds();
-    // uint16_t val = analogRead(PHOTOTRANSISTOR);
-    // uint8_t val1 = val % 10;
-    // uint8_t val10 = (val % 100) / 10;
-    // uint8_t val100 = (val % 1000) / 100;
-    // uint8_t val1000 = val / 1000;
-    // columnValues[0] = val1000;
-    // columnValues[1] = val100;
-    // columnValues[2] = val10;
-    // columnValues[3] = val1;
+    // getTimeAndWriteToLeds();
+
+    uint16_t val = analogRead(PHOTOTRANSISTOR);
+    uint8_t val1 = val % 10;
+    uint8_t val10 = (val % 100) / 10;
+    uint8_t val100 = (val % 1000) / 100;
+    uint8_t val1000 = val / 1000;
+    columnValues[0] = val1000;
+    columnValues[1] = val100;
+    columnValues[2] = val10;
+    columnValues[3] = val1;
 
     break;
   case MenuYear:
@@ -302,6 +307,39 @@ void setColumValues()
   default:
     break;
   }
+}
+
+bool lastPhotValWasHigh = 0;
+uint16_t lastPhotoVal = 0;
+unsigned long lastPhotoChangedMs = 0;
+#define PHOTO_TH 50
+
+
+void calculatedFrequency() {
+  uint16_t val = analogRead(PHOTOTRANSISTOR);
+  if(val < PHOTO_TH && lastPhotValWasHigh) {
+    unsigned long now = millis();
+    unsigned long msBetweenFallingEdge = now - lastPhotoChangedMs;
+    int frequency = 1.0 / (msBetweenFallingEdge/ 1000.0);
+    displayIntAsBCD(frequency);
+    lastPhotoChangedMs = now;
+    lastPhotValWasHigh = false;
+  }
+  else if (val > PHOTO_TH) {
+    lastPhotValWasHigh = true;
+  }
+}
+
+
+void displayIntAsBCD(uint16_t val) {
+      uint8_t val1 = val % 10;
+    uint8_t val10 = (val % 100) / 10;
+    uint8_t val100 = (val % 1000) / 100;
+    uint8_t val1000 = val / 1000;
+        columnValues[0] = val1000;
+    columnValues[1] = val100;
+    columnValues[2] = val10;
+    columnValues[3] = val1;
 }
 
 // set column col according to binary patter columnValue
@@ -422,6 +460,25 @@ void setup()
   }
   MCP7940.deviceStart();
 
+  oled.begin(128, 32, sizeof(tiny4koled_init_128x32), tiny4koled_init_128x32);
+  oled.enableChargePump();
+  oled.setRotation(1);
+  oled.clear();
+  // Turn on the display
+  oled.on();
+
+  // Switch the half of RAM that we are writing to, to be the half that is non currently displayed
+  oled.switchRenderFrame();
+    oled.clear();
+  oled.setFont(FONT8X16);
+  oled.setCursor(0, 0);
+
+  // Write the text to oled RAM (which is not currently being displayed)
+  // Wrap strings in F() to save RAM!
+  oled.print(F("Cool"));
+
+  oled.switchFrame();
+
   //columnValues[0] = 4;
 }
 
@@ -439,6 +496,8 @@ void loop()
     tLastButtonTimer = tCurrentTime;
   }
   // columnValues[0] = readButton;
+
+    // calculatedFrequency();
 
   if (tCurrentTime - tLastUpdateTimer > LEDS_UPDATE_INTERVAL_MS)
   {
