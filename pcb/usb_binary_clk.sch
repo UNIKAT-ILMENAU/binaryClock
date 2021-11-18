@@ -1,4 +1,5 @@
 EESchema Schematic File Version 4
+LIBS:usb_binary_clk-cache
 EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
@@ -88,7 +89,7 @@ F 1 "Crystal" V 8595 1931 50  0000 L CNN
 F 2 "Crystal:Crystal_AT310_D3.0mm_L10.0mm_Horizontal" H 8550 1800 50  0001 C CNN
 F 3 "~" H 8550 1800 50  0001 C CNN
 	1    8550 1800
-	0    1    1    0   
+	0    -1   -1   0   
 $EndComp
 $Comp
 L Device:C C3
@@ -189,7 +190,7 @@ F 3 "" H 2400 1850 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Connector:USB_B_Micro J2
+L usb_binary_clk-rescue:USB_B_Micro-Connector J2
 U 1 1 60FCFE26
 P 2450 1300
 F 0 "J2" H 2507 1767 50  0000 C CNN
@@ -290,7 +291,7 @@ F 3 "" H 1250 1850 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Connector:USB_B_Micro J1
+L usb_binary_clk-rescue:USB_B_Micro-Connector J1
 U 1 1 611ED4E3
 P 1300 1300
 F 0 "J1" H 1357 1767 50  0000 C CNN
@@ -532,7 +533,7 @@ F 3 "" H 8950 3750 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L MCU_Microchip_ATtiny:ATtiny84V-10PU U2
+L usb_binary_clk-rescue:ATtiny84V-10PU-MCU_Microchip_ATtiny U2
 U 1 1 60FA63B0
 P 8950 4750
 F 0 "U2" H 8420 4796 50  0000 R CNN
