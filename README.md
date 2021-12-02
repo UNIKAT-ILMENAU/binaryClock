@@ -14,6 +14,8 @@
     - PT 334-6C EVL
     - SFH 309-5 OSO
     - SFH 300-3/4
+- Batteriehalter: https://www.mouser.de/ProductDetail/Linx-Technologies/BAT-HLD-012-SMT?qs=Z0V%2FpEl%252BOGfZsSJil9WIXw%3D%3D
+- Micro USB Port: https://www.mouser.de/ProductDetail/CUI-Devices/UJ2-MIBH-G-SMT-TR?qs=IS%252B4QmGtzzpvS1XQusp0iA%3D%3D
 
 ## Software
 - https://forum.arduino.cc/t/time-libary-sommerzeit-winterzeit/221884

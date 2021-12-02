@@ -1,5 +1,4 @@
 EESchema Schematic File Version 4
-LIBS:usb_binary_clk-cache
 EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
@@ -232,7 +231,7 @@ U 1 1 611F233A
 P 5000 1800
 F 0 "BT1" H 5118 1896 50  0000 L CNN
 F 1 "Battery_Cell" H 5118 1805 50  0000 L CNN
-F 2 "Battery:BatteryHolder_Keystone_3001_1x12mm" V 5000 1860 50  0001 C CNN
+F 2 "binary_clk_parts:bat-hld-012" V 5000 1860 50  0001 C CNN
 F 3 "~" V 5000 1860 50  0001 C CNN
 	1    5000 1800
 	1    0    0    -1  
