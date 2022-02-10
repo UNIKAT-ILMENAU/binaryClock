@@ -3,11 +3,14 @@ USB Binary Clock using ATtin84 and MCP7940
 
 Notes:
 timer interrupt generator: https://www.arduinoslovakia.eu/application/timer-calculator
+
+TODO:
+- Min,H anzeigen
+- Clock Calibration
 */
 
 #include <Arduino.h>
 #include <MCP7940.h>
-#include <Tiny4kOLED.h>
 #include <time.h>
 
 // pinout for pio https://raw.githubusercontent.com/SpenceKonde/ATTinyCore/master/avr/extras/Pinout_x4.jpg
@@ -23,13 +26,21 @@ timer interrupt generator: https://www.arduinoslovakia.eu/application/timer-calc
 #define BUTTON_2_THRESHOLD 512 // 346
 #define BUTTON_3_THRESHOLD 851 // 678
 
+#define BRIGHTNESS_FULL 100
+#define BRIGHTNESS_HALF 50
+#define BRIGHTNESS_LOW 1
+
+#define THRESHOLD_TO_FULL 512
+#define THRESHOLD_FROM_FULL 400
+#define THRESHOLD_TO_LOW 1
+#define THRESHOLD_FROM_LOW 100
+
 #define LEDS_UPDATE_INTERVAL_MS 100
 #define BUTTON_DEBOUNCE_MS 50
 #define BUTTON_HOLD_MS 500
 
 enum ClockStates
 {
-
   TimeRunning,
   MenuYear = 1,
   MenuMonth = 2,
@@ -52,7 +63,7 @@ int const ROW[] = {ROW0, ROW1, ROW2, ROW3};
 
 uint8_t columnCounter = 0;
 uint8_t pwmCounter = 0;
-uint8_t displayBrightness = 100;
+uint8_t displayBrightness = BRIGHTNESS_HALF;
 
 uint8_t columnValues[4] = {0};
 
@@ -114,7 +125,7 @@ ClockStates stateFunction(Buttons buttons) //fix return type
     {
       theTimeWeWantToSet = dateTimeToTm(MCP7940.now());
       theTimeWeWantToSet.tm_sec = 0; // reset seconds to zero, because the user can not set them :(
-      clockState = MenuYear;
+      clockState = MenuHour;
     }
     break;
   case MenuYear:
@@ -248,24 +259,27 @@ void getTimeAndWriteToLeds()
   }
 }
 
+void getBrightnessAndWriteToLed()
+{
+  uint16_t val = analogRead(PHOTOTRANSISTOR);
+  uint8_t val1 = val % 10;
+  uint8_t val10 = (val % 100) / 10;
+  uint8_t val100 = (val % 1000) / 100;
+  uint8_t val1000 = val / 1000;
+  columnValues[0] = val1000;
+  columnValues[1] = val100;
+  columnValues[2] = val10;
+  columnValues[3] = val1;
+}
+
 // based on state, set colums to display
 void setColumValues()
 {
   switch (clockState)
   {
   case TimeRunning:
-    // getTimeAndWriteToLeds();
-
-    uint16_t val = analogRead(PHOTOTRANSISTOR);
-    uint8_t val1 = val % 10;
-    uint8_t val10 = (val % 100) / 10;
-    uint8_t val100 = (val % 1000) / 100;
-    uint8_t val1000 = val / 1000;
-    columnValues[0] = val1000;
-    columnValues[1] = val100;
-    columnValues[2] = val10;
-    columnValues[3] = val1;
-
+    getTimeAndWriteToLeds();
+    // getBrightnessAndWriteToLed();
     break;
   case MenuYear:
     columnValues[0] = MenuYear;
@@ -309,37 +323,71 @@ void setColumValues()
   }
 }
 
+
+
+void setDisplayBrightnes()
+{
+  uint16_t brightness = analogRead(PHOTOTRANSISTOR);
+  if (displayBrightness == BRIGHTNESS_FULL)
+  {
+    if (brightness <= THRESHOLD_FROM_FULL)
+    {
+      displayBrightness = BRIGHTNESS_HALF;
+    }
+  }
+  else if (displayBrightness == BRIGHTNESS_HALF)
+  {
+    if (brightness >= THRESHOLD_TO_FULL)
+    {
+      displayBrightness = BRIGHTNESS_FULL;
+    }
+    else if (brightness <= THRESHOLD_TO_LOW)
+    {
+      displayBrightness = BRIGHTNESS_LOW;
+    }
+  }
+  else if (displayBrightness == BRIGHTNESS_LOW)
+  {
+    if (brightness >= THRESHOLD_FROM_LOW)
+    {
+      displayBrightness = BRIGHTNESS_HALF;
+    }
+  }
+}
+
 bool lastPhotValWasHigh = 0;
 uint16_t lastPhotoVal = 0;
 unsigned long lastPhotoChangedMs = 0;
 #define PHOTO_TH 50
 
-
-void calculatedFrequency() {
+void calculatedFrequency()
+{
   uint16_t val = analogRead(PHOTOTRANSISTOR);
-  if(val < PHOTO_TH && lastPhotValWasHigh) {
+  if (val < PHOTO_TH && lastPhotValWasHigh)
+  {
     unsigned long now = millis();
     unsigned long msBetweenFallingEdge = now - lastPhotoChangedMs;
-    int frequency = 1.0 / (msBetweenFallingEdge/ 1000.0);
+    int frequency = 1.0 / (msBetweenFallingEdge / 1000.0);
     displayIntAsBCD(frequency);
     lastPhotoChangedMs = now;
     lastPhotValWasHigh = false;
   }
-  else if (val > PHOTO_TH) {
+  else if (val > PHOTO_TH)
+  {
     lastPhotValWasHigh = true;
   }
 }
 
-
-void displayIntAsBCD(uint16_t val) {
-      uint8_t val1 = val % 10;
-    uint8_t val10 = (val % 100) / 10;
-    uint8_t val100 = (val % 1000) / 100;
-    uint8_t val1000 = val / 1000;
-        columnValues[0] = val1000;
-    columnValues[1] = val100;
-    columnValues[2] = val10;
-    columnValues[3] = val1;
+void displayIntAsBCD(uint16_t val)
+{
+  uint8_t val1 = val % 10;
+  uint8_t val10 = (val % 100) / 10;
+  uint8_t val100 = (val % 1000) / 100;
+  uint8_t val1000 = val / 1000;
+  columnValues[0] = val1000;
+  columnValues[1] = val100;
+  columnValues[2] = val10;
+  columnValues[3] = val1;
 }
 
 // set column col according to binary patter columnValue
@@ -429,7 +477,7 @@ Buttons getButtons()
   uint16_t read = analogRead(BUTTON_PIN);
   if (read < BUTTON_1_THRESHOLD)
   {
-    return ButtonSelect;
+    return ButtonMinus;
   }
   if (read < BUTTON_2_THRESHOLD)
   {
@@ -437,7 +485,7 @@ Buttons getButtons()
   }
   if (read < BUTTON_3_THRESHOLD)
   {
-    return ButtonMinus;
+    return ButtonSelect;
   }
   return ButtonNone; // Kein Button gedrückt
 }
@@ -459,32 +507,10 @@ void setup()
     delay(1);
   }
   MCP7940.deviceStart();
-
-  oled.begin(128, 32, sizeof(tiny4koled_init_128x32), tiny4koled_init_128x32);
-  oled.enableChargePump();
-  oled.setRotation(1);
-  oled.clear();
-  // Turn on the display
-  oled.on();
-
-  // Switch the half of RAM that we are writing to, to be the half that is non currently displayed
-  oled.switchRenderFrame();
-    oled.clear();
-  oled.setFont(FONT8X16);
-  oled.setCursor(0, 0);
-
-  // Write the text to oled RAM (which is not currently being displayed)
-  // Wrap strings in F() to save RAM!
-  oled.print(F("Cool"));
-
-  oled.switchFrame();
-
-  //columnValues[0] = 4;
 }
 
 void loop()
 {
-  // return;
   unsigned long tCurrentTime = millis();
 
   Buttons readButton = getButtons();
@@ -495,14 +521,11 @@ void loop()
     lastButton = readButton;
     tLastButtonTimer = tCurrentTime;
   }
-  // columnValues[0] = readButton;
-
-    // calculatedFrequency();
 
   if (tCurrentTime - tLastUpdateTimer > LEDS_UPDATE_INTERVAL_MS)
   {
     setColumValues();
-    // getTimeAndWriteToLeds();
+    setDisplayBrightnes();
     tLastUpdateTimer = tCurrentTime;
   }
 }
