@@ -1,3 +1,5 @@
 (fp_lib_table
   (lib (name binary_clk_parts)(type KiCad)(uri ${KIPRJMOD}/binary_clk_parts.pretty)(options "")(descr ""))
+  (lib (name test)(type KiCad)(uri C:/Users/johan/Documents/design/layout.pretty)(options "")(descr ""))
+  (lib (name mouser)(type KiCad)(uri /home/johannes/binaryClock/pcb/mouser_parts/SamacSys_Parts.pretty)(options "")(descr ""))
 )

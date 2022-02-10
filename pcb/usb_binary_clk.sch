@@ -1,5 +1,4 @@
 EESchema Schematic File Version 4
-LIBS:usb_binary_clk-cache
 EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
@@ -92,10 +91,10 @@ F 3 "~" H 8550 1800 50  0001 C CNN
 	0    -1   -1   0   
 $EndComp
 $Comp
-L Device:C C3
+L Device:C C1
 U 1 1 60FDC6DB
 P 8550 2250
-F 0 "C3" H 8665 2296 50  0000 L CNN
+F 0 "C1" H 8665 2296 50  0000 L CNN
 F 1 "18p" H 8665 2205 50  0000 L CNN
 F 2 "Capacitor_THT:C_Disc_D4.3mm_W1.9mm_P5.00mm" H 8588 2100 50  0001 C CNN
 F 3 "~" H 8550 2250 50  0001 C CNN
@@ -190,12 +189,12 @@ F 3 "" H 2400 1850 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L usb_binary_clk-rescue:USB_B_Micro-Connector J2
+L Connector:USB_B_Micro J2
 U 1 1 60FCFE26
 P 2450 1300
 F 0 "J2" H 2507 1767 50  0000 C CNN
 F 1 "USB_B_Micro" H 2507 1676 50  0000 C CNN
-F 2 "Connector_USB:USB_Micro-B_GCT_USB3076-30-A" H 2600 1250 50  0001 C CNN
+F 2 "binary_clk_parts:UJ2MIBHGSMTTR" H 2600 1250 50  0001 C CNN
 F 3 "~" H 2600 1250 50  0001 C CNN
 	1    2450 1300
 	1    0    0    -1  
@@ -216,10 +215,10 @@ F 3 "" H 7100 1350 50  0001 C CNN
 	0    1    1    0   
 $EndComp
 $Comp
-L Device:C C1
+L Device:C C3
 U 1 1 61158066
 P 7300 1350
-F 0 "C1" H 7415 1396 50  0000 L CNN
+F 0 "C3" H 7415 1396 50  0000 L CNN
 F 1 "100n" H 7415 1305 50  0000 L CNN
 F 2 "Capacitor_THT:C_Disc_D4.3mm_W1.9mm_P5.00mm" H 7338 1200 50  0001 C CNN
 F 3 "~" H 7300 1350 50  0001 C CNN
@@ -232,7 +231,7 @@ U 1 1 611F233A
 P 5000 1800
 F 0 "BT1" H 5118 1896 50  0000 L CNN
 F 1 "Battery_Cell" H 5118 1805 50  0000 L CNN
-F 2 "Battery:BatteryHolder_Keystone_3001_1x12mm" V 5000 1860 50  0001 C CNN
+F 2 "binary_clk_parts:bat-hld-012" V 5000 1860 50  0001 C CNN
 F 3 "~" V 5000 1860 50  0001 C CNN
 	1    5000 1800
 	1    0    0    -1  
@@ -291,12 +290,12 @@ F 3 "" H 1250 1850 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L usb_binary_clk-rescue:USB_B_Micro-Connector J1
+L Connector:USB_B_Micro J1
 U 1 1 611ED4E3
 P 1300 1300
 F 0 "J1" H 1357 1767 50  0000 C CNN
 F 1 "USB_B_Micro" H 1357 1676 50  0000 C CNN
-F 2 "Connector_USB:USB_Micro-B_GCT_USB3076-30-A" H 1450 1250 50  0001 C CNN
+F 2 "binary_clk_parts:UJ2MIBHGSMTTR" H 1450 1250 50  0001 C CNN
 F 3 "~" H 1450 1250 50  0001 C CNN
 	1    1300 1300
 	1    0    0    -1  
@@ -313,12 +312,12 @@ F 3 "" H 2000 3200 50  0001 C CNN
 	-1   0    0    -1  
 $EndComp
 $Comp
-L Device:R R6
+L Device:R R8
 U 1 1 61255740
 P 2000 3350
-F 0 "R6" H 2070 3396 50  0000 L CNN
+F 0 "R8" H 2070 3396 50  0000 L CNN
 F 1 "47k" H 2070 3305 50  0000 L CNN
-F 2 "Resistor_THT:R_Axial_DIN0204_L3.6mm_D1.6mm_P7.62mm_Horizontal" V 1930 3350 50  0001 C CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal" V 1930 3350 50  0001 C CNN
 F 3 "~" H 2000 3350 50  0001 C CNN
 	1    2000 3350
 	-1   0    0    -1  
@@ -355,23 +354,23 @@ F 3 "~" H 1700 4150 50  0001 C CNN
 	-1   0    0    -1  
 $EndComp
 $Comp
-L Device:R R9
+L Device:R R10
 U 1 1 60FE618D
 P 2000 4550
-F 0 "R9" H 2070 4596 50  0000 L CNN
+F 0 "R10" H 2070 4596 50  0000 L CNN
 F 1 "68k" H 2070 4505 50  0000 L CNN
-F 2 "Resistor_THT:R_Axial_DIN0204_L3.6mm_D1.6mm_P7.62mm_Horizontal" V 1930 4550 50  0001 C CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal" V 1930 4550 50  0001 C CNN
 F 3 "~" H 2000 4550 50  0001 C CNN
 	1    2000 4550
 	1    0    0    -1  
 $EndComp
 $Comp
-L Device:R R8
+L Device:R R9
 U 1 1 60FE5BF1
 P 2000 4150
-F 0 "R8" H 2070 4196 50  0000 L CNN
+F 0 "R9" H 2070 4196 50  0000 L CNN
 F 1 "24k" H 2070 4105 50  0000 L CNN
-F 2 "Resistor_THT:R_Axial_DIN0204_L3.6mm_D1.6mm_P7.62mm_Horizontal" V 1930 4150 50  0001 C CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal" V 1930 4150 50  0001 C CNN
 F 3 "~" H 2000 4150 50  0001 C CNN
 	1    2000 4150
 	1    0    0    -1  
@@ -436,23 +435,23 @@ F 3 "" H 10300 5050 50  0001 C CNN
 	-1   0    0    1   
 $EndComp
 $Comp
-L Device:R R5
+L Device:R R6
 U 1 1 6123D27B
 P 10150 4900
-F 0 "R5" H 10220 4946 50  0000 L CNN
+F 0 "R6" H 10220 4946 50  0000 L CNN
 F 1 "4.7k" H 10220 4855 50  0000 L CNN
-F 2 "Resistor_THT:R_Axial_DIN0204_L3.6mm_D1.6mm_P7.62mm_Horizontal" V 10080 4900 50  0001 C CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 10080 4900 50  0001 C CNN
 F 3 "~" H 10150 4900 50  0001 C CNN
 	1    10150 4900
 	1    0    0    -1  
 $EndComp
 $Comp
-L Device:R R3
+L Device:R R5
 U 1 1 6123AC0B
 P 10450 4700
-F 0 "R3" H 10520 4746 50  0000 L CNN
+F 0 "R5" H 10520 4746 50  0000 L CNN
 F 1 "4.7k" H 10520 4655 50  0000 L CNN
-F 2 "Resistor_THT:R_Axial_DIN0204_L3.6mm_D1.6mm_P7.62mm_Horizontal" V 10380 4700 50  0001 C CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal" V 10380 4700 50  0001 C CNN
 F 3 "~" H 10450 4700 50  0001 C CNN
 	1    10450 4700
 	1    0    0    -1  
@@ -533,7 +532,7 @@ F 3 "" H 8950 3750 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L usb_binary_clk-rescue:ATtiny84V-10PU-MCU_Microchip_ATtiny U2
+L MCU_Microchip_ATtiny:ATtiny84V-10PU U2
 U 1 1 60FA63B0
 P 8950 4750
 F 0 "U2" H 8420 4796 50  0000 R CNN
@@ -558,7 +557,7 @@ U 1 1 6184C83E
 P 6250 3450
 F 0 "R2" V 6043 3450 50  0000 C CNN
 F 1 "82" V 6134 3450 50  0000 C CNN
-F 2 "Resistor_THT:R_Axial_DIN0204_L3.6mm_D1.6mm_P7.62mm_Horizontal" V 6180 3450 50  0001 C CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal" V 6180 3450 50  0001 C CNN
 F 3 "~" H 6250 3450 50  0001 C CNN
 	1    6250 3450
 	0    1    1    0   
@@ -569,7 +568,7 @@ U 1 1 6184C848
 P 6250 2950
 F 0 "R1" V 6043 2950 50  0000 C CNN
 F 1 "82" V 6134 2950 50  0000 C CNN
-F 2 "Resistor_THT:R_Axial_DIN0204_L3.6mm_D1.6mm_P7.62mm_Horizontal" V 6180 2950 50  0001 C CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal" V 6180 2950 50  0001 C CNN
 F 3 "~" H 6250 2950 50  0001 C CNN
 	1    6250 2950
 	0    1    1    0   
@@ -851,23 +850,23 @@ Wire Wire Line
 Wire Wire Line
 	5400 4900 5650 4900
 $Comp
-L Device:R R4
+L Device:R R3
 U 1 1 6184C834
 P 6250 3950
-F 0 "R4" V 6043 3950 50  0000 C CNN
+F 0 "R3" V 6043 3950 50  0000 C CNN
 F 1 "82" V 6134 3950 50  0000 C CNN
-F 2 "Resistor_THT:R_Axial_DIN0204_L3.6mm_D1.6mm_P7.62mm_Horizontal" V 6180 3950 50  0001 C CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal" V 6180 3950 50  0001 C CNN
 F 3 "~" H 6250 3950 50  0001 C CNN
 	1    6250 3950
 	0    1    1    0   
 $EndComp
 $Comp
-L Device:R R7
+L Device:R R4
 U 1 1 6184C2B8
 P 6250 4450
-F 0 "R7" V 6043 4450 50  0000 C CNN
+F 0 "R4" V 6043 4450 50  0000 C CNN
 F 1 "82" V 6134 4450 50  0000 C CNN
-F 2 "Resistor_THT:R_Axial_DIN0204_L3.6mm_D1.6mm_P7.62mm_Horizontal" V 6180 4450 50  0001 C CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal" V 6180 4450 50  0001 C CNN
 F 3 "~" H 6250 4450 50  0001 C CNN
 	1    6250 4450
 	0    1    1    0   
@@ -884,8 +883,6 @@ Text Label 9900 5150 2    50   ~ 0
 col23
 Text Label 9900 4650 2    50   ~ 0
 sw
-Wire Wire Line
-	9900 4650 9550 4650
 Connection ~ 4950 2950
 Connection ~ 4950 3450
 Connection ~ 4950 3950
@@ -946,12 +943,12 @@ F 3 "~" H 1450 6200 50  0001 C CNN
 	0    1    1    0   
 $EndComp
 $Comp
-L Device:R R10
+L Device:R R7
 U 1 1 6183B33F
 P 1500 6650
-F 0 "R10" H 1570 6696 50  0000 L CNN
+F 0 "R7" H 1570 6696 50  0000 L CNN
 F 1 "10k" H 1570 6605 50  0000 L CNN
-F 2 "Resistor_THT:R_Axial_DIN0204_L3.6mm_D1.6mm_P7.62mm_Horizontal" V 1430 6650 50  0001 C CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 1430 6650 50  0001 C CNN
 F 3 "~" H 1500 6650 50  0001 C CNN
 	1    1500 6650
 	1    0    0    -1  
@@ -999,4 +996,69 @@ Text Label 8100 1900 0    50   ~ 0
 clk+
 Text Label 8100 1700 0    50   ~ 0
 clk-
+$Comp
+L Connector:AVR-ISP-6 J3
+U 1 1 61B50CC1
+P 4200 6850
+F 0 "J3" H 3871 6946 50  0000 R CNN
+F 1 "AVR-ISP-6" H 3871 6855 50  0000 R CNN
+F 2 "binary_clk_parts:isp_pogoPinPads" V 3950 6900 50  0001 C CNN
+F 3 " ~" H 2925 6300 50  0001 C CNN
+	1    4200 6850
+	1    0    0    -1  
+$EndComp
+Text Label 4900 6650 2    50   ~ 0
+MISO
+Text Label 4900 6750 2    50   ~ 0
+MOSI
+Text Label 4900 6850 2    50   ~ 0
+SCK
+Text Label 4900 6950 2    50   ~ 0
+RST
+Wire Wire Line
+	4900 6650 4600 6650
+Wire Wire Line
+	4900 6750 4600 6750
+Wire Wire Line
+	4900 6850 4600 6850
+Wire Wire Line
+	4900 6950 4600 6950
+$Comp
+L power:+5V #PWR?
+U 1 1 61E83871
+P 4100 6200
+F 0 "#PWR?" H 4100 6050 50  0001 C CNN
+F 1 "+5V" H 4115 6373 50  0000 C CNN
+F 2 "" H 4100 6200 50  0001 C CNN
+F 3 "" H 4100 6200 50  0001 C CNN
+	1    4100 6200
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4100 6200 4100 6350
+$Comp
+L power:GND #PWR?
+U 1 1 61E8E695
+P 4100 7350
+F 0 "#PWR?" H 4100 7100 50  0001 C CNN
+F 1 "GND" H 4105 7177 50  0000 C CNN
+F 2 "" H 4100 7350 50  0001 C CNN
+F 3 "" H 4100 7350 50  0001 C CNN
+	1    4100 7350
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4100 7350 4100 7250
+Text Label 10200 4650 2    50   ~ 0
+MISO
+Wire Wire Line
+	9550 4650 10200 4650
+Text Label 10200 4550 2    50   ~ 0
+SCK
+Text Label 10150 4750 2    50   ~ 0
+MOSI
+Text Label 9850 5350 2    50   ~ 0
+RST
+Wire Wire Line
+	9850 5350 9550 5350
 $EndSCHEMATC
