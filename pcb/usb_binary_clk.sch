@@ -1024,10 +1024,10 @@ Wire Wire Line
 Wire Wire Line
 	4900 6950 4600 6950
 $Comp
-L power:+5V #PWR?
+L power:+5V #PWR0121
 U 1 1 61E83871
 P 4100 6200
-F 0 "#PWR?" H 4100 6050 50  0001 C CNN
+F 0 "#PWR0121" H 4100 6050 50  0001 C CNN
 F 1 "+5V" H 4115 6373 50  0000 C CNN
 F 2 "" H 4100 6200 50  0001 C CNN
 F 3 "" H 4100 6200 50  0001 C CNN
@@ -1037,10 +1037,10 @@ $EndComp
 Wire Wire Line
 	4100 6200 4100 6350
 $Comp
-L power:GND #PWR?
+L power:GND #PWR0122
 U 1 1 61E8E695
 P 4100 7350
-F 0 "#PWR?" H 4100 7100 50  0001 C CNN
+F 0 "#PWR0122" H 4100 7100 50  0001 C CNN
 F 1 "GND" H 4105 7177 50  0000 C CNN
 F 2 "" H 4100 7350 50  0001 C CNN
 F 3 "" H 4100 7350 50  0001 C CNN
@@ -1061,4 +1061,50 @@ Text Label 9850 5350 2    50   ~ 0
 RST
 Wire Wire Line
 	9850 5350 9550 5350
+$Comp
+L Mechanical:MountingHole H3
+U 1 1 623D2CDE
+P 6000 6200
+F 0 "H3" H 6100 6246 50  0000 L CNN
+F 1 "MountingHole" H 6100 6155 50  0000 L CNN
+F 2 "binary_clk_parts:mountingPad_custom1" H 6000 6200 50  0001 C CNN
+F 3 "~" H 6000 6200 50  0001 C CNN
+	1    6000 6200
+	1    0    0    -1  
+$EndComp
+$Comp
+L Mechanical:MountingHole H4
+U 1 1 623D35E7
+P 6000 6500
+F 0 "H4" H 6100 6546 50  0000 L CNN
+F 1 "MountingHole" H 6100 6455 50  0000 L CNN
+F 2 "binary_clk_parts:mountingPad_custom1" H 6000 6500 50  0001 C CNN
+F 3 "~" H 6000 6500 50  0001 C CNN
+	1    6000 6500
+	1    0    0    -1  
+$EndComp
+$Comp
+L Mechanical:MountingHole H1
+U 1 1 623D3758
+P 5650 6200
+F 0 "H1" H 5750 6246 50  0000 L CNN
+F 1 "MountingHole" H 5750 6155 50  0000 L CNN
+F 2 "binary_clk_parts:mountingPad_custom1" H 5650 6200 50  0001 C CNN
+F 3 "~" H 5650 6200 50  0001 C CNN
+	1    5650 6200
+	1    0    0    -1  
+$EndComp
+$Comp
+L Mechanical:MountingHole H2
+U 1 1 623D391E
+P 5650 6500
+F 0 "H2" H 5750 6546 50  0000 L CNN
+F 1 "MountingHole" H 5750 6455 50  0000 L CNN
+F 2 "binary_clk_parts:mountingPad_custom1" H 5650 6500 50  0001 C CNN
+F 3 "~" H 5650 6500 50  0001 C CNN
+	1    5650 6500
+	1    0    0    -1  
+$EndComp
+Text Notes 5550 6050 0    50   ~ 0
+Mounting pads
 $EndSCHEMATC
