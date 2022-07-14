@@ -5,7 +5,6 @@ Notes:
 timer interrupt generator: https://www.arduinoslovakia.eu/application/timer-calculator
 
 TODO:
-- Min,H anzeigen
 - Clock Calibration
 */
 
@@ -42,11 +41,11 @@ TODO:
 enum ClockStates
 {
   TimeRunning,
-  MenuYear = 1,
-  MenuMonth = 2,
-  MenuDay = 3,
-  MenuHour = 4,
-  MenuMinute = 5,
+  MenuYear = 11,
+  MenuMonth = 12,
+  MenuDay = 13,
+  MenuHour = 1,
+  MenuMinute = 2,
   MenuSecond = 6,
 };
 
@@ -116,7 +115,7 @@ DateTime tmToDateTime(tm time)
   return DateTime(time.tm_year, time.tm_mon, time.tm_mday, time.tm_hour, time.tm_min, time.tm_sec);
 }
 
-ClockStates stateFunction(Buttons buttons) //fix return type
+ClockStates stateFunction(Buttons buttons) // fix return type
 {
   switch (clockState)
   {
@@ -251,10 +250,10 @@ void getTimeAndWriteToLeds()
     //  now.hour();
     //  now.minute();
 
-    columnValues[3] = now.second() % 10;
-    columnValues[2] = now.second() / 10;
-    columnValues[1] = now.minute() % 10;
-    columnValues[0] = now.minute() / 10;
+    columnValues[3] = now.minute() % 10;
+    columnValues[2] = now.minute() / 10;
+    columnValues[1] = now.hour() % 10;
+    columnValues[0] = now.hour() / 10;
     secs = now.second();
   }
 }
@@ -321,9 +320,30 @@ void setColumValues()
   default:
     break;
   }
+  static bool blink = false; // assigns value of 5 only once
+  if (clockState != TimeRunning)
+  {
+    static long tBlinkLast = 0;
+    long tBlinkNow = millis();
+    if (tBlinkNow - tBlinkLast >= 250)
+    {
+      blink = !blink;
+      tBlinkLast = tBlinkNow;
+    }
+  }
+  else
+  {
+    blink = false;
+  }
+  if (blink)
+  {
+    columnValues[0] |= 0b1000;
+  }
+  else
+  {
+    columnValues[0] &= 0b0111;
+  }
 }
-
-
 
 void setDisplayBrightnes()
 {
