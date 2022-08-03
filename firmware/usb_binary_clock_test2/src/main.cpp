@@ -534,8 +534,13 @@ void loop()
   unsigned long tCurrentTime = millis();
 
   Buttons readButton = getButtons();
-  if ((readButton != lastButton && tCurrentTime - tLastButtonTimer > BUTTON_DEBOUNCE_MS) ||
-      tCurrentTime - tLastButtonTimer > BUTTON_HOLD_MS)
+  Buttons readButton2 = getButtons();
+  if (readButton != readButton2)
+  {
+    return;
+  }
+
+  if (readButton != lastButton || tCurrentTime - tLastButtonTimer > BUTTON_HOLD_MS)
   {
     stateFunction(readButton);
     lastButton = readButton;
