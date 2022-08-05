@@ -4,10 +4,10 @@ EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
 Sheet 1 1
-Title ""
-Date ""
-Rev ""
-Comp ""
+Title "Binary Clock"
+Date "2022-08-05"
+Rev "1"
+Comp "UNIKAT Ilmenau"
 Comment1 ""
 Comment2 ""
 Comment3 ""
@@ -1107,4 +1107,6 @@ F 3 "~" H 5650 6500 50  0001 C CNN
 $EndComp
 Text Notes 5550 6050 0    50   ~ 0
 Mounting pads
+Text Notes 8850 1400 0    50   ~ 0
+15p works just as well
 $EndSCHEMATC
