@@ -54,7 +54,8 @@ enum Buttons
   ButtonNone,
   ButtonSelect,
   ButtonPlus,
-  ButtonMinus
+  ButtonMinus,
+  ButtonError
 };
 
 int const COL[] = {COL0, COL1};
@@ -495,6 +496,10 @@ void turnOffLeds()
 Buttons getButtons()
 {
   uint16_t read = analogRead(BUTTON_PIN);
+  uint16_t read2 = analogRead(BUTTON_PIN);
+  if(abs(read - read2)>3){
+    return ButtonError;
+  }
   if (read < BUTTON_1_THRESHOLD)
   {
     return ButtonMinus;
@@ -534,8 +539,7 @@ void loop()
   unsigned long tCurrentTime = millis();
 
   Buttons readButton = getButtons();
-  Buttons readButton2 = getButtons();
-  if (readButton != readButton2)
+  if (readButton == ButtonError)
   {
     return;
   }
