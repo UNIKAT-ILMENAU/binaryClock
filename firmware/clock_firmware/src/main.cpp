@@ -532,6 +532,7 @@ void setup()
     delay(1);
   }
   MCP7940.deviceStart();
+  MCP7940.setBattery(true);
 }
 
 void loop()
